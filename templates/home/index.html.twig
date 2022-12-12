@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News Parser{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+        <div class="m-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+        {% else %}
+        <div class="d-flex m-3 ">
+        <a href="{{ path('app_login') }}">Login</a>
+         </div>
+    {% endif %}
+
+<div class="container">
+    <h1> {{ title }} </h1><hr>
+
+ <div class="row"> 
+
+     {% if news %}
+     {% for nw in news %}
+     <div class="col-md-4">
+     <h4>{{ nw.title }}</h4>
+     <img class="img-fluid" 
+     src=" {{ nw.PostImageUrl }} " 
+     alt="post_img" 
+     />
+     <p>{{ nw.description }} ...<a href='{{nw.PostUrl}}' target="_blank">Read more</a></p>
+     <p><span class="text-primar">Author:</span> {{ nw.author }}</p>
+     <p><span class="text-primar">Date:</span> {{ nw.CreatedAt|date("m/d/Y") }}</p>
+     </div>
+     {% endfor %}
+
+     <div class="navigation text-center">
+<div class="d-flex justify-content-center">
+ {{ knp_pagination_render(news) }}
+</div>           
+        </div>
+        
+     {% if news.getTotalItemCount < 1 %}
+    <div class="col-md-4">No record found!</div>
+     {% endif %}
+     {% endif %}
+    
+</div>
+
+   
+</div>
+{% endblock %}

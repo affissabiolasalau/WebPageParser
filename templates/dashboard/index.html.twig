@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+{% if app.user %}
+        <div class="m-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+<div class="row"> 
+
+{% if news %}
+<div class="table-responsive">
+
+<div class="navigation text-center">
+<div class="d-flex justify-content-center">
+ {{ knp_pagination_render(news) }}
+</div>           
+        </div>
+
+<table class="table table-striped">
+<thead>
+<tr>
+<th>Date</td>
+<th>Author</td>
+<th>Title</td>
+<th>Description</td>
+<th>Picture</td>
+<th>Post URL</td>
+<th>Delete</td>
+</tr>
+</thead>
+  <tbody>
+  {% for nw in news %}
+  <tr>
+  <td>{{ nw.CreatedAt|date("m/d/Y") }}</td>
+  <td>{{ nw.author }}</td>
+  <td>{{ nw.title }}</td>
+  <td>{{ nw.description }}</td>
+  <td><a href='{{nw.PostImageUrl}}' target="_blank">
+  
+  <img class="img-fluid" 
+     src=" {{ nw.PostImageUrl }} " 
+     alt="post_img" 
+     />
+
+  </a></td>
+  <td><a href='{{nw.PostUrl}}' target="_blank">{{nw.PostUrl}}</a></td>
+  <td> <i data-bs-toggle="modal" data-bs-target="#exampleModal-{{nw.id}}" class="text-danger fa fa-trash fa-2x"></i> </td>
+  </tr>
+     <div class="col-md-4">
+     <h4></h4>
+     
+     </div>
+     {% endfor %}
+
+        
+
+
+  </tbody>
+</table>  
+
+<div class="navigation text-center">
+<div class="d-flex justify-content-center">
+ {{ knp_pagination_render(news) }}
+</div>           
+        </div>
+
+</div>   
+     {% if news.getTotalItemCount < 1 %}
+    <div class="col-md-4 m-5">No record found!</div>
+     {% endif %}
+     {% endif %}
+    
+</div>
+
+{% if news %}
+{% for nw in news %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal-{{nw.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">You are about to delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{nw.title}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href='/delete/{{nw.id}}/news' class="btn btn-danger"> Confirm </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

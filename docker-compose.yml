@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+    mysql:
+        image: mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: 
+            MYSQL_USER: root
+            MYSQL_PASSWORD: 
+            MYSQL_DATABASE: news_parse
+        volumes:
+            - .docker/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+            - db_data:/var/lib/mysql
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  db-data:
+###< doctrine/doctrine-bundle ###
